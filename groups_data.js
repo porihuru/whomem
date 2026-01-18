@@ -132,34 +132,34 @@ var GROUPS = [
   // ※あとで正しいメンバー名に差し替えてください（アプリ上は「空正解」を防げます）。
 
   { id:"reiwa_me_i", era:"令和", group:"ME:I",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["MIU","MOMONA","AYANE"] },
 
   { id:"reiwa_fruits_zipper", era:"令和", group:"FRUITS ZIPPER",
     members:["月足天音","鎮西寿々歌","櫻井優衣","早瀬ノエル","真中まな","松本かれん","仲川瑠夏"] },
 
   { id:"reiwa_equal_love", era:"令和", group:"=LOVE",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["大谷映美里	","場花菜","音嶋莉沙	"] },
 
   { id:"reiwa_not_equal_me", era:"令和", group:"≠ME",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["尾木波菜","落合希来里","蟹沢萌子"] },
 
   { id:"reiwa_nearly_equal_joy", era:"令和", group:"≒JOY",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["逢田珠里依","天野香乃愛	","市原愛弓3"] },
 
   { id:"reiwa_is_sue", era:"令和", group:"IS:SUE",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["NANO","RINO","YUUKI"] },
 
   { id:"reiwa_cutie_street", era:"令和", group:"CUTIE STREET",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["古澤 里紗","佐野 愛花","板倉 可奈"] },
 
   { id:"reiwa_candy_tune", era:"令和", group:"CANDY TUNE",
     members:["村川緋杏","桐原美月","福山梨乃","小川奈々子","南なつ","宮野静","立花琴未"] },
 
   { id:"reiwa_ilife", era:"令和", group:"iLiFE!",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["心花 りり","福丸 うさ","若葉 のあ"] },
 
   { id:"reiwa_takane_nadeshiko", era:"令和", group:"高嶺のなでしこ",
-    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+    members:["城月菜央","涼海すう","橋本桃呼"] },
 
   { id:"reiwa_cho_tokimeki", era:"令和", group:"超ときめき♡宣伝部",
     members:["辻野かなみ","坂井仁香","小泉遥香","菅田愛貴","小高サラ","杏ジュリア"] },

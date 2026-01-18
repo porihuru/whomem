@@ -112,7 +112,7 @@ var GROUPS = [
   { id:"reiwa_ilife",              era:"令和", group:"iLiFE!",               members:[] },
   { id:"reiwa_takane_nadeshiko",   era:"令和", group:"高嶺のなでしこ",       members:[] },
   { id:"reiwa_cho_tokimeki",       era:"令和", group:"超ときめき♡宣伝部",   members:[] },
-  { id:"reiwa_xg",                 era:"令和", group:"XG",                   members:[] },
+  { id:"reiwa_xg",                 era:"令和", group:"XG",                   members:[] }
 
 
 ];

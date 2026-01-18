@@ -87,7 +87,12 @@ function checkAnswer(selectedIndex) {
 // 最終結果を表示
 function showFinalResult() {
     questionElement.textContent = 'クイズが終了しました！';
-    optionsContainer.innerHTML = '<button class="option" onclick="restartQuiz()">もう一度挑戦する</button>';
+    const restartButton = document.createElement('button');
+    restartButton.className = 'option';
+    restartButton.textContent = 'もう一度挑戦する';
+    restartButton.addEventListener('click', restartQuiz);
+    optionsContainer.innerHTML = '';
+    optionsContainer.appendChild(restartButton);
     resultElement.textContent = 'お疲れ様でした！';
     resultElement.className = 'correct-result';
 }

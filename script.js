@@ -1,7 +1,7 @@
-// 定数
+// Constants
 const RESULT_DISPLAY_DELAY = 1500;
 
-// クイズデータ
+// Quiz data
 const quizData = [
   {
     question: '以下のうち、嵐のメンバーは誰ですか？',

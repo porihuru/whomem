@@ -145,7 +145,7 @@ h1 {
     font-weight: 500;
 }
 
-/* モバイル対応 */
+/* Mobile responsive design */
 @media (max-width: 768px) {
     .container {
         padding: 25px;

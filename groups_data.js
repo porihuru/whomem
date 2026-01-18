@@ -1,0 +1,51 @@
+/*
+[JST 2026-01-18 15:00]  groups_data_v20260118-01.js
+アイドルグループ定義データ（「どっちがメンバー？」用）
+このファイルは「データのみ」。
+HTML側で GROUPS を参照して問題生成する。
+
+注意:
+- 形式: { id, era, group, members[] }
+- GROUPS はグローバルに定義（Edge95想定）
+*/
+
+var GROUPS = [
+  // ===== 昭和 =====
+  { id:"showa_pinklady",     era:"昭和", group:"ピンク・レディー",   members:["未唯mie","増田恵子"] },
+  { id:"showa_candies",      era:"昭和", group:"キャンディーズ",     members:["伊藤蘭","藤村美樹","田中好子"] },
+  { id:"showa_shonentai",    era:"昭和", group:"少年隊",             members:["東山紀之","植草克秀","錦織一清"] },
+  { id:"showa_shibugakitai", era:"昭和", group:"シブがき隊",         members:["薬丸裕英","本木雅弘","布川敏和"] },
+  { id:"showa_onyanko",      era:"昭和", group:"おニャン子クラブ",   members:["渡辺満里奈","国生さゆり","新田恵利"] },
+
+  { id:"showa_hikaru_genji", era:"昭和", group:"光GENJI",            members:["諸星和己","大沢樹生","佐藤アツヒロ"] },
+  { id:"showa_ratsandstar",  era:"昭和", group:"ラッツ&スター",      members:["鈴木雅之","田代まさし","桑野信義"] },
+  { id:"showa_wink",         era:"昭和", group:"Wink",               members:["相田翔子","鈴木早智子"] },
+  { id:"showa_checkers",     era:"昭和", group:"チェッカーズ",       members:["藤井フミヤ","藤井尚之"] },
+  { id:"showa_tunnelzu",     era:"昭和", group:"とんねるず",         members:["石橋貴明","木梨憲武"] },
+
+  // ===== 平成 =====
+  { id:"heisei_smap",        era:"平成", group:"SMAP",               members:["木村拓哉","中居正広","稲垣吾郎","草彅剛","香取慎吾"] },
+  { id:"heisei_arashi",      era:"平成", group:"嵐",                 members:["大野智","櫻井翔","相葉雅紀","二宮和也","松本潤"] },
+  { id:"heisei_morning",     era:"平成", group:"モーニング娘。",     members:["安倍なつみ","後藤真希","石川梨華","吉澤ひとみ"] },
+  { id:"heisei_akb48",       era:"平成", group:"AKB48",              members:["前田敦子","大島優子","高橋みなみ"] },
+  { id:"heisei_kattun",      era:"平成", group:"KAT-TUN",            members:["亀梨和也","赤西仁","上田竜也"] },
+
+  { id:"heisei_tokio",       era:"平成", group:"TOKIO",              members:["城島茂","国分太一","松岡昌宏"] },
+  { id:"heisei_v6",          era:"平成", group:"V6",                 members:["岡田准一","坂本昌行","井ノ原快彦"] },
+  { id:"heisei_exile",       era:"平成", group:"EXILE",              members:["ATSUSHI","AKIRA","TAKAHIRO"] },
+  { id:"heisei_perfume",     era:"平成", group:"Perfume",            members:["あ〜ちゃん","かしゆか","のっち"] },
+  { id:"heisei_kinki",       era:"平成", group:"KinKi Kids",         members:["堂本光一","堂本剛"] },
+
+  // ===== 令和 =====
+  { id:"reiwa_snowman",      era:"令和", group:"Snow Man",
+    members:["岩本照","深澤辰哉","ラウール","渡辺翔太","向井康二","阿部亮平","目黒蓮","宮舘涼太","佐久間大介"] },
+  { id:"reiwa_sixtones",     era:"令和", group:"SixTONES",
+    members:["ジェシー","京本大我","松村北斗","髙地優吾","森本慎太郎","田中樹"] },
+  { id:"reiwa_nogizaka46",   era:"令和", group:"乃木坂46",           members:["齋藤飛鳥","白石麻衣","西野七瀬"] },
+
+  { id:"reiwa_hinatazaka46", era:"令和", group:"日向坂46",           members:["小坂菜緒","齊藤京子","加藤史帆"] },
+  { id:"reiwa_sakurazaka46", era:"令和", group:"櫻坂46",             members:["森田ひかる","田村保乃","藤吉夏鈴"] },
+  { id:"reiwa_niziu",        era:"令和", group:"NiziU",              members:["MAKO","RIMA","NINA"] },
+  { id:"reiwa_jo1",          era:"令和", group:"JO1",                members:["川西拓実","白岩瑠姫","佐藤景瑚"] },
+  { id:"reiwa_befirst",      era:"令和", group:"BE:FIRST",           members:["SOTA","MANATO","RYUHEI"] }
+];

@@ -89,30 +89,82 @@ var GROUPS = [
   { id:"reiwa_yorushika",    era:"令和", group:"ヨルシカ",            members:["n-buna","suis"] },
   { id:"reiwa_creepy",       era:"令和", group:"Creepy Nuts",        members:["R-指定","DJ松永"] },
 
-  // ===== 令和（追加：ユーザー指定グループ / 重複は除外済み） =====
-  { id:"reiwa_naniwadanshi",       era:"令和", group:"なにわ男子",           members:[] },
-  { id:"reiwa_number_i",           era:"令和", group:"Number_i",             members:[] },
-  { id:"reiwa_andteam",            era:"令和", group:"&TEAM",                members:[] },
-  { id:"reiwa_mazzel",             era:"令和", group:"MAZZEL",               members:[] },
-  { id:"reiwa_dxteen",             era:"令和", group:"DXTEEN",               members:[] },
-  { id:"reiwa_octpath",            era:"令和", group:"OCTPATH",              members:[] },
-  { id:"reiwa_milk",               era:"令和", group:"M!LK",                 members:[] },
-  { id:"reiwa_ae_group",           era:"令和", group:"Aぇ! group",           members:[] },
-  { id:"reiwa_chotokkyo",          era:"令和", group:"超特急（令和で再ブレイク）", members:[] },
+  // ===== 令和（追加：ユーザー指定グループ / 空白membersを解消） =====
 
-  // 【女性グループ】（追加：重複は除外済み）
-  { id:"reiwa_me_i",               era:"令和", group:"ME:I",                 members:[] },
-  { id:"reiwa_fruits_zipper",      era:"令和", group:"FRUITS ZIPPER",        members:[] },
-  { id:"reiwa_equal_love",         era:"令和", group:"=LOVE",                members:[] },
-  { id:"reiwa_not_equal_me",       era:"令和", group:"≠ME",                  members:[] },
-  { id:"reiwa_nearly_equal_joy",   era:"令和", group:"≒JOY",                 members:[] },
-  { id:"reiwa_is_sue",             era:"令和", group:"IS:SUE",               members:[] },
-  { id:"reiwa_cutie_street",       era:"令和", group:"CUTIE STREET",         members:[] },
-  { id:"reiwa_candy_tune",         era:"令和", group:"CANDY TUNE",           members:[] },
-  { id:"reiwa_ilife",              era:"令和", group:"iLiFE!",               members:[] },
-  { id:"reiwa_takane_nadeshiko",   era:"令和", group:"高嶺のなでしこ",       members:[] },
-  { id:"reiwa_cho_tokimeki",       era:"令和", group:"超ときめき♡宣伝部",   members:[] },
-  { id:"reiwa_xg",                 era:"令和", group:"XG",                   members:[] }
+  // なにわ男子（7）
+  { id:"reiwa_naniwadanshi", era:"令和", group:"なにわ男子",
+    members:["西畑大吾","大西流星","道枝駿佑","高橋恭平","長尾謙杜","藤原丈一郎","大橋和也"] },
 
+  // Number_i（3）
+  { id:"reiwa_number_i", era:"令和", group:"Number_i",
+    members:["平野紫耀","神宮寺勇太","岸優太"] },
+
+  // &TEAM（9）※表記はステージ名/公式表記
+  { id:"reiwa_andteam", era:"令和", group:"&TEAM",
+    members:["EJ","FUMA","K","NICHOLAS","YUMA","JO","HARUA","TAKI","MAKI"] },
+
+  // MAZZEL（8）※公式表記
+  { id:"reiwa_mazzel", era:"令和", group:"MAZZEL",
+    members:["KAIRYU","NAOYA","RAN","SEITO","RYUKI","HAYATO","EIKI","TAKUTO"] },
+
+  // DXTEEN（6）
+  { id:"reiwa_dxteen", era:"令和", group:"DXTEEN",
+    members:["大久保波留","田中笑太郎","谷口太一","寺尾香信","平本健","福田歩汰"] },
+
+  // OCTPATH（6）
+  { id:"reiwa_octpath", era:"令和", group:"OCTPATH",
+    members:["太田駿静","海帆","栗田航兵","古瀬直輝","小堀柊","高橋わたる"] },
+
+  // M!LK（5）
+  { id:"reiwa_milk", era:"令和", group:"M!LK",
+    members:["佐野勇斗","塩﨑太智","山中柔太朗","曽野舜太","吉田仁人"] },
+
+  // Aぇ! group（5）
+  { id:"reiwa_ae_group", era:"令和", group:"Aぇ! group",
+    members:["正門良規","末澤誠也","小島健","佐野晶哉","草間リチャード敬太"] },
+
+  // 超特急（9）※ステージ名中心
+  { id:"reiwa_chotokkyo", era:"令和", group:"超特急（令和で再ブレイク）",
+    members:["カイ","リョウガ","タクヤ","ユーキ","タカシ","シューヤ","マサヒロ","アロハ","ハル"] },
+
+  // 【女性グループ】（追加：空白membersを解消）
+  // ここから先は「空白をゼロにする」目的で、確実に確認できていないものは要確認プレースホルダを入れています。
+  // ※あとで正しいメンバー名に差し替えてください（アプリ上は「空正解」を防げます）。
+
+  { id:"reiwa_me_i", era:"令和", group:"ME:I",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_fruits_zipper", era:"令和", group:"FRUITS ZIPPER",
+    members:["月足天音","鎮西寿々歌","櫻井優衣","早瀬ノエル","真中まな","松本かれん","仲川瑠夏"] },
+
+  { id:"reiwa_equal_love", era:"令和", group:"=LOVE",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_not_equal_me", era:"令和", group:"≠ME",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_nearly_equal_joy", era:"令和", group:"≒JOY",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_is_sue", era:"令和", group:"IS:SUE",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_cutie_street", era:"令和", group:"CUTIE STREET",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_candy_tune", era:"令和", group:"CANDY TUNE",
+    members:["村川緋杏","桐原美月","福山梨乃","小川奈々子","南なつ","宮野静","立花琴未"] },
+
+  { id:"reiwa_ilife", era:"令和", group:"iLiFE!",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_takane_nadeshiko", era:"令和", group:"高嶺のなでしこ",
+    members:["要確認_メンバー1","要確認_メンバー2","要確認_メンバー3"] },
+
+  { id:"reiwa_cho_tokimeki", era:"令和", group:"超ときめき♡宣伝部",
+    members:["辻野かなみ","坂井仁香","小泉遥香","菅田愛貴","小高サラ","杏ジュリア"] },
+
+  { id:"reiwa_xg", era:"令和", group:"XG",
+    members:["JURIN","CHISA","HINATA","HARVEY","JURIA","MAYA","COCONA"] }
 
 ];

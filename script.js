@@ -1,3 +1,6 @@
+// 定数
+const RESULT_DISPLAY_DELAY = 1500;
+
 // クイズデータ
 const quizData = [
   {
@@ -12,7 +15,7 @@ const quizData = [
   },
   {
     question: '以下のうち、TOKIOのメンバーは誰ですか？',
-    options: ['二宮和也', '国分太一', '長瀬智也', '木村拓哉'],
+    options: ['二宮和也', '松本潤', '長瀬智也', '木村拓哉'],
     correct: 2
   },
   {
@@ -103,7 +106,7 @@ function selectAnswer(selectedIndex) {
   if (currentQuestion < quizData.length - 1) {
     nextButton.classList.remove('hidden');
   } else {
-    setTimeout(showResults, 1500);
+    setTimeout(showResults, RESULT_DISPLAY_DELAY);
   }
 }
 

@@ -23,6 +23,7 @@ const quizData = [
 ];
 
 let currentQuestionIndex = 0;
+const NEXT_QUESTION_DELAY = 2000; // 次の質問へ移動するまでの待機時間（ミリ秒）
 
 // DOM要素
 const questionElement = document.getElementById('question');
@@ -73,7 +74,7 @@ function checkAnswer(selectedIndex) {
     } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[currentQuestion.correct].classList.add('correct');
-        resultElement.textContent = '不正解です。正解は「' + currentQuestion.options[currentQuestion.correct] + '」です。';
+        resultElement.textContent = `不正解です。正解は「${currentQuestion.options[currentQuestion.correct]}」です。`;
         resultElement.className = 'incorrect-result';
     }
 
@@ -81,7 +82,7 @@ function checkAnswer(selectedIndex) {
     setTimeout(() => {
         currentQuestionIndex++;
         loadQuestion();
-    }, 2000);
+    }, NEXT_QUESTION_DELAY);
 }
 
 // 最終結果を表示

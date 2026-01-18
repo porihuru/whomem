@@ -10,6 +10,7 @@ HTML側で GROUPS を参照して問題生成する。
 */
 
 var GROUPS = [
+
   // ===== 昭和 =====
   { id:"showa_pinklady",     era:"昭和", group:"ピンク・レディー",   members:["未唯mie","増田恵子"] },
   { id:"showa_candies",      era:"昭和", group:"キャンディーズ",     members:["伊藤蘭","藤村美樹","田中好子"] },
@@ -22,6 +23,19 @@ var GROUPS = [
   { id:"showa_wink",         era:"昭和", group:"Wink",               members:["相田翔子","鈴木早智子"] },
   { id:"showa_checkers",     era:"昭和", group:"チェッカーズ",       members:["藤井フミヤ","藤井尚之"] },
   { id:"showa_tunnelzu",     era:"昭和", group:"とんねるず",         members:["石橋貴明","木梨憲武"] },
+
+  { id:"showa_alfee",        era:"昭和", group:"THE ALFEE",           members:["坂崎幸之助","高見沢俊彦","桜井賢"] },
+  { id:"showa_pripri",       era:"昭和", group:"プリンセス プリンセス", members:["岸谷香","渡辺敦子"] },
+  { id:"showa_barbee",       era:"昭和", group:"BARBEE BOYS",         members:["杏子","いまみちともたか"] },
+  { id:"showa_tmnetwork",    era:"昭和", group:"TM NETWORK",         members:["小室哲哉","宇都宮隆","木根尚登"] },
+  { id:"showa_rebecca",      era:"昭和", group:"REBECCA",             members:["NOKKO","土橋安騎夫"] },
+
+  // ★さらに追加5
+  { id:"showa_boowy",        era:"昭和", group:"BOØWY",               members:["氷室京介","布袋寅泰"] },
+  { id:"showa_oniyanko2",    era:"昭和", group:"うしろゆびさされ組", members:["高井麻巳子","岩井由紀子"] },
+  { id:"showa_ccboys",       era:"昭和", group:"C-C-B",               members:["渡辺英樹","関口誠人"] },
+  { id:"showa_bakufu",       era:"昭和", group:"爆風スランプ",        members:["サンプラザ中野","パッパラー河合"] },
+  { id:"showa_tube",         era:"昭和", group:"TUBE",                members:["前田亘輝","春畑道哉"] },
 
   // ===== 平成 =====
   { id:"heisei_smap",        era:"平成", group:"SMAP",               members:["木村拓哉","中居正広","稲垣吾郎","草彅剛","香取慎吾"] },
@@ -36,6 +50,19 @@ var GROUPS = [
   { id:"heisei_perfume",     era:"平成", group:"Perfume",            members:["あ〜ちゃん","かしゆか","のっち"] },
   { id:"heisei_kinki",       era:"平成", group:"KinKi Kids",         members:["堂本光一","堂本剛"] },
 
+  { id:"heisei_news",        era:"平成", group:"NEWS",               members:["小山慶一郎","加藤シゲアキ","増田貴久"] },
+  { id:"heisei_hsj",         era:"平成", group:"Hey! Say! JUMP",     members:["山田涼介","知念侑李","有岡大貴"] },
+  { id:"heisei_egirls",      era:"平成", group:"E-girls",            members:["Ami","Erie","藤井夏恋"] },
+  { id:"heisei_flumpool",    era:"平成", group:"flumpool",           members:["山村隆太","阪井一生"] },
+  { id:"heisei_greeeen",     era:"平成", group:"GReeeeN",            members:["HIDE","navi"] },
+
+  // ★さらに追加5
+  { id:"heisei_aaa",         era:"平成", group:"AAA",                members:["西島隆弘","宇野実彩子"] },
+  { id:"heisei_mrchildren",  era:"平成", group:"Mr.Children",        members:["桜井和寿","田原健一"] },
+  { id:"heisei_bump",        era:"平成", group:"BUMP OF CHICKEN",     members:["藤原基央","増川弘明"] },
+  { id:"heisei_orange",      era:"平成", group:"ORANGE RANGE",        members:["YAMATO","HIROKI"] },
+  { id:"heisei_radwimps",    era:"平成", group:"RADWIMPS",            members:["野田洋次郎","桑原彰"] },
+
   // ===== 令和 =====
   { id:"reiwa_snowman",      era:"令和", group:"Snow Man",
     members:["岩本照","深澤辰哉","ラウール","渡辺翔太","向井康二","阿部亮平","目黒蓮","宮舘涼太","佐久間大介"] },
@@ -47,5 +74,19 @@ var GROUPS = [
   { id:"reiwa_sakurazaka46", era:"令和", group:"櫻坂46",             members:["森田ひかる","田村保乃","藤吉夏鈴"] },
   { id:"reiwa_niziu",        era:"令和", group:"NiziU",              members:["MAKO","RIMA","NINA"] },
   { id:"reiwa_jo1",          era:"令和", group:"JO1",                members:["川西拓実","白岩瑠姫","佐藤景瑚"] },
-  { id:"reiwa_befirst",      era:"令和", group:"BE:FIRST",           members:["SOTA","MANATO","RYUHEI"] }
+  { id:"reiwa_befirst",      era:"令和", group:"BE:FIRST",           members:["SOTA","MANATO","RYUHEI"] },
+
+  { id:"reiwa_ini",          era:"令和", group:"INI",                members:["木村柾哉","西洸人","田島将吾"] },
+  { id:"reiwa_travis",       era:"令和", group:"Travis Japan",       members:["松田元太","宮近海斗","七五三掛龍也"] },
+  { id:"reiwa_newjeans",     era:"令和", group:"NewJeans",           members:["MINJI","HANNI","DANIELLE"] },
+  { id:"reiwa_lesserafim",   era:"令和", group:"LE SSERAFIM",        members:["SAKURA","KAZUHA","CHAEWON"] },
+  { id:"reiwa_aespa",        era:"令和", group:"aespa",              members:["KARINA","WINTER","NINGNING"] },
+
+  // ★さらに追加5
+  { id:"reiwa_ive",          era:"令和", group:"IVE",                members:["YUJIN","WONYOUNG"] },
+  { id:"reiwa_txt",          era:"令和", group:"TOMORROW X TOGETHER", members:["SOOBIN","YEONJUN"] },
+  { id:"reiwa_kinggnu",      era:"令和", group:"King Gnu",           members:["常田大希","井口理"] },
+  { id:"reiwa_yorushika",    era:"令和", group:"ヨルシカ",            members:["n-buna","suis"] },
+  { id:"reiwa_creepy",       era:"令和", group:"Creepy Nuts",        members:["R-指定","DJ松永"] }
+
 ];

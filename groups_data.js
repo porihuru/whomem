@@ -87,7 +87,7 @@ var GROUPS = [
   { id:"reiwa_txt",          era:"令和", group:"TOMORROW X TOGETHER", members:["SOOBIN","YEONJUN"] },
   { id:"reiwa_kinggnu",      era:"令和", group:"King Gnu",           members:["常田大希","井口理"] },
   { id:"reiwa_yorushika",    era:"令和", group:"ヨルシカ",            members:["n-buna","suis"] },
-  { id:"reiwa_creepy",       era:"令和", group:"Creepy Nuts",        members:["R-指定","DJ松永"] }
+  { id:"reiwa_creepy",       era:"令和", group:"Creepy Nuts",        members:["R-指定","DJ松永"] },
 
   // ===== 令和（追加：ユーザー指定グループ / 重複は除外済み） =====
   { id:"reiwa_naniwadanshi",       era:"令和", group:"なにわ男子",           members:[] },

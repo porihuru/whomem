@@ -1,33 +1,766 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+[JST 2026-01-18 15:00]  idol_quiz_which_member_v20260118-01.html
+昭和・平成・令和「どっちがメンバー？」2択クイズ（単一HTML）
+仕様:
+  - 問題: 「どっちが『グループ名』のメンバー？」（2択）
+  - フィルタ: 昭和/平成/令和（複数選択）
+  - 出題数: 10/20/30/全問
+  - ダミー候補: 原則「同じ時代(era)の別グループ」から1名
+              足りない場合は全体から補完
+  - スコア/進捗表示、次へ、最初から、保存データ削除
+  - 設定/進捗を localStorage 保存（Edge 95 互換）
+注意:
+  - 収録データはサンプル。GROUPSを増やすだけで問題数増加。
+-->
+<!doctype html>
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
-    <script>
-        const quizData = {
-            Showa: [
-                { question: 'Showa Question 1', options: ['A', 'B', 'C', 'D'], answer: 'A' },
-                { question: 'Showa Question 2', options: ['A', 'B', 'C', 'D'], answer: 'B' }
-            ],
-            Heisei: [
-                { question: 'Heisei Question 1', options: ['A', 'B', 'C', 'D'], answer: 'C' },
-                { question: 'Heisei Question 2', options: ['A', 'B', 'C', 'D'], answer: 'D' }
-            ],
-            Reiwa: [
-                { question: 'Reiwa Question 1', options: ['A', 'B', 'C', 'D'], answer: 'A' },
-                { question: 'Reiwa Question 2', options: ['A', 'B', 'C', 'D'], answer: 'B' }
-            ]
-        };
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>アイドル2択クイズ：どっちがメンバー？</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121a33;
+      --text:#eef2ff;
+      --muted:rgba(238,242,255,0.70);
+      --line:rgba(255,255,255,0.12);
+      --ok:rgba(46,204,113,0.16);
+      --ng:rgba(231,76,60,0.16);
+      --shadow: 0 8px 24px rgba(0,0,0,0.35);
+      --radius: 16px;
+      --radius2: 12px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background: radial-gradient(1200px 800px at 50% -10%, rgba(120,140,255,0.22), transparent 60%),
+                  radial-gradient(900px 700px at 10% 10%, rgba(0,255,255,0.08), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{ max-width: 980px; margin:0 auto; padding: 14px 12px 26px; }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky; top: 10px; z-index: 10;
+      backdrop-filter: blur(6px);
+    }
+    .title{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .title h1{
+      margin:0; font-size: 16px; line-height: 1.2; letter-spacing: 0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .title .sub{
+      font-size: 12px; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .stat{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; font-size:12px; color:var(--muted); }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 6px 10px; border:1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      border-radius: 999px; color: var(--text);
+    }
 
-        // Function to start the quiz
-        function startQuiz() {
-            // Implementation for starting the quiz
-        }
-    </script>
+    .main{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 900px){
+      .grid2{ grid-template-columns: 1.15fr 0.85fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      background: rgba(0,0,0,0.12);
+    }
+    .label{ font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .qtext{
+      font-size: 18px; font-weight: 800; line-height: 1.25; letter-spacing: 0.02em;
+      word-break: break-word;
+    }
+    .tag{
+      font-size: 12px; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(0,0,0,0.22);
+      white-space: nowrap;
+    }
+    .card .bd{ padding: 12px; }
+
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 600px){
+      .choices{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.14));
+      color: var(--text);
+      border-radius: var(--radius2);
+      padding: 14px 12px;
+      text-align:left;
+      font-size: 16px;
+      line-height: 1.25;
+      cursor:pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.26);
+      transition: transform 0.06s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active{ transform: scale(0.99); }
+    .btn.small{
+      padding: 10px 12px;
+      font-size: 14px;
+      background: rgba(0,0,0,0.18);
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(120,140,255,0.22), rgba(31,43,85,0.35));
+      border-color: rgba(120,140,255,0.35);
+    }
+    .btn.danger{
+      background: rgba(231,76,60,0.10);
+      border-color: rgba(231,76,60,0.35);
+    }
+    .btn.disabled, .btn:disabled{
+      opacity: 0.55;
+      cursor: default;
+      transform:none !important;
+    }
+
+    .resultBox{
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.18);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .resultBox.ok{ background: var(--ok); color: rgba(238,242,255,0.92); }
+    .resultBox.ng{ background: var(--ng); color: rgba(238,242,255,0.92); }
+
+    .settings .row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin: 8px 0;
+    }
+    .settings label{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size: 14px; color: var(--text);
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      user-select:none;
+    }
+    .settings input[type="checkbox"]{ width: 18px; height: 18px; }
+    .select{
+      appearance:none;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline:none;
+    }
+    .btnRow{
+      display:flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+
+    .note{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
-    <h1>Quiz App: Showa, Heisei, Reiwa Artists Group Quiz Categories</h1>
-    <button onclick="startQuiz()">Start Quiz</button>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>アイドル2択クイズ：どっちがメンバー？</h1>
+        <div class="sub">「どっちが『グループ』のメンバー？」を2択で回答（データはサンプル）</div>
+      </div>
+      <div class="stat">
+        <div class="pill">問題 <span id="statQ">-</span>/<span id="statTotal">-</span></div>
+        <div class="pill">正解 <span id="statOK">0</span></div>
+        <div class="pill">不正解 <span id="statNG">0</span></div>
+      </div>
+    </div>
+
+    <div class="main grid2">
+      <!-- Quiz -->
+      <div class="card">
+        <div class="hd">
+          <div style="min-width:0;">
+            <div class="label">問題</div>
+            <div class="qtext" id="qText">開始を押してください</div>
+          </div>
+          <div class="tag" id="qTag">-</div>
+        </div>
+        <div class="bd">
+          <div class="choices" id="choices"></div>
+
+          <div class="resultBox" id="resultBox" style="display:none;"></div>
+
+          <div class="btnRow">
+            <button class="btn primary small" id="btnNext" disabled>次へ</button>
+            <button class="btn small" id="btnRestart">最初から</button>
+            <button class="btn danger small" id="btnReset">保存データ削除</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="card settings">
+        <div class="hd">
+          <div style="min-width:0;">
+            <div class="label">設定</div>
+            <div class="qtext" style="font-size:16px;">出題範囲・出題数</div>
+          </div>
+          <div class="tag">v20260118-01</div>
+        </div>
+        <div class="bd">
+          <div class="label">時代フィルタ（複数選択可）</div>
+          <div class="row">
+            <label><input type="checkbox" id="fShowa">昭和</label>
+            <label><input type="checkbox" id="fHeisei">平成</label>
+            <label><input type="checkbox" id="fReiwa">令和</label>
+          </div>
+
+          <div class="label" style="margin-top:10px;">出題数</div>
+          <div class="row">
+            <select class="select" id="selCount">
+              <option value="10">10問</option>
+              <option value="20">20問</option>
+              <option value="30">30問</option>
+              <option value="all">全問</option>
+            </select>
+            <button class="btn primary small" id="btnStart">開始（/再開）</button>
+          </div>
+
+          <div class="label" style="margin-top:12px;">使い方</div>
+          <div class="resultBox" style="display:block;">
+1) フィルタと出題数を選ぶ
+2) 「開始（/再開）」でスタート
+3) 2択で回答 → 判定表示 → 「次へ」
+
+データ追加は <span class="mono">GROUPS</span> に追記するだけです。
+          </div>
+
+          <div class="note">Edge 95 互換 / 外部ライブラリ不使用 / localStorage保存</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   [CFG-01] データ（サンプル）
+   形式: { id, era, group, members[] }
+========================= */
+var GROUPS = [
+  // ===== 昭和 =====
+  { id:"showa_pinklady",    era:"昭和", group:"ピンク・レディー", members:["未唯mie","増田恵子"] },
+  { id:"showa_candies",     era:"昭和", group:"キャンディーズ",   members:["伊藤蘭","藤村美樹","田中好子"] },
+  { id:"showa_shonentai",   era:"昭和", group:"少年隊",           members:["東山紀之","植草克秀","錦織一清"] },
+  { id:"showa_shibugakitai",era:"昭和", group:"シブがき隊",       members:["薬丸裕英","本木雅弘","布川敏和"] },
+  { id:"showa_onyanko",     era:"昭和", group:"おニャン子クラブ", members:["渡辺満里奈","国生さゆり","新田恵利"] },
+
+  // 追加5
+  { id:"showa_hikaru_genji",era:"昭和", group:"光GENJI",           members:["諸星和己","大沢樹生","佐藤アツヒロ"] },
+  { id:"showa_ratsandstar", era:"昭和", group:"ラッツ&スター",     members:["鈴木雅之","田代まさし","桑野信義"] },
+  { id:"showa_wink",        era:"昭和", group:"Wink",              members:["相田翔子","鈴木早智子"] },
+  { id:"showa_checkers",    era:"昭和", group:"チェッカーズ",      members:["藤井フミヤ","藤井尚之"] },
+  { id:"showa_tunnelzu",    era:"昭和", group:"とんねるず",        members:["石橋貴明","木梨憲武"] },
+
+  // ===== 平成 =====
+  { id:"heisei_smap",    era:"平成", group:"SMAP",       members:["木村拓哉","中居正広","稲垣吾郎","草彅剛","香取慎吾"] },
+  { id:"heisei_arashi",  era:"平成", group:"嵐",         members:["大野智","櫻井翔","相葉雅紀","二宮和也","松本潤"] },
+  { id:"heisei_morning", era:"平成", group:"モーニング娘。", members:["安倍なつみ","後藤真希","石川梨華","吉澤ひとみ"] },
+  { id:"heisei_akb48",   era:"平成", group:"AKB48",      members:["前田敦子","大島優子","高橋みなみ"] },
+  { id:"heisei_kattun",  era:"平成", group:"KAT-TUN",    members:["亀梨和也","赤西仁","上田竜也"] },
+
+  // 追加5
+  { id:"heisei_tokio",   era:"平成", group:"TOKIO",      members:["城島茂","国分太一","松岡昌宏"] },
+  { id:"heisei_v6",      era:"平成", group:"V6",         members:["岡田准一","坂本昌行","井ノ原快彦"] },
+  { id:"heisei_exile",   era:"平成", group:"EXILE",      members:["ATSUSHI","AKIRA","TAKAHIRO"] },
+  { id:"heisei_perfume", era:"平成", group:"Perfume",    members:["あ〜ちゃん","かしゆか","のっち"] },
+  { id:"heisei_kinki",   era:"平成", group:"KinKi Kids", members:["堂本光一","堂本剛"] },
+
+  // ===== 令和 =====
+  { id:"reiwa_snowman",      era:"令和", group:"Snow Man",
+    members:["岩本照","深澤辰哉","ラウール","渡辺翔太","向井康二","阿部亮平","目黒蓮","宮舘涼太","佐久間大介"] },
+  { id:"reiwa_sixtones",     era:"令和", group:"SixTONES",
+    members:["ジェシー","京本大我","松村北斗","髙地優吾","森本慎太郎","田中樹"] },
+  { id:"reiwa_nogizaka46",   era:"令和", group:"乃木坂46", members:["齋藤飛鳥","白石麻衣","西野七瀬"] },
+
+  // 追加5
+  { id:"reiwa_hinatazaka46", era:"令和", group:"日向坂46", members:["小坂菜緒","齊藤京子","加藤史帆"] },
+  { id:"reiwa_sakurazaka46", era:"令和", group:"櫻坂46",   members:["森田ひかる","田村保乃","藤吉夏鈴"] },
+  { id:"reiwa_niziu",        era:"令和", group:"NiziU",    members:["MAKO","RIMA","NINA"] },
+  { id:"reiwa_jo1",          era:"令和", group:"JO1",      members:["川西拓実","白岩瑠姫","佐藤景瑚"] },
+  { id:"reiwa_befirst",      era:"令和", group:"BE:FIRST", members:["SOTA","MANATO","RYUHEI"] }
+];
+
+/* =========================
+   [CFG-02] 保存キー
+========================= */
+var LS_KEY = "idol_quiz_which_member_v20260118_01";
+
+/* =========================
+   [UTIL-01] 乱数/シャッフル
+========================= */
+function randInt(n){ return Math.floor(Math.random() * n); }
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j = randInt(i+1);
+    var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
+  }
+  return arr;
+}
+function uniq(arr){
+  var m = {}; var out = [];
+  for(var i=0;i<arr.length;i++){
+    var k = String(arr[i]);
+    if(!m[k]){ m[k]=1; out.push(arr[i]); }
+  }
+  return out;
+}
+
+/* =========================
+   [STATE-01] 状態
+========================= */
+var state = {
+  filters: { showa:true, heisei:true, reiwa:true },
+  countMode: "10",
+  deck: [],      // 出題用 groupIndex の配列
+  pos: 0,
+  ok: 0,
+  ng: 0,
+  locked: false,
+  current: null  // { groupIdx, era, group, correctMember, dummyMember, choices[] }
+};
+
+function saveState(){
+  try{
+    var payload = {
+      filters: state.filters,
+      countMode: state.countMode,
+      deck: state.deck,
+      pos: state.pos,
+      ok: state.ok,
+      ng: state.ng
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    var raw = localStorage.getItem(LS_KEY);
+    if(!raw) return false;
+    var p = JSON.parse(raw);
+    if(!p || !p.deck || typeof p.pos!=="number") return false;
+    state.filters = p.filters || state.filters;
+    state.countMode = p.countMode || state.countMode;
+    state.deck = p.deck || [];
+    state.pos = p.pos || 0;
+    state.ok = p.ok || 0;
+    state.ng = p.ng || 0;
+    return true;
+  }catch(e){ return false; }
+}
+function clearSaved(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
+
+/* =========================
+   [DOM-01] 要素
+========================= */
+var elStatQ = document.getElementById("statQ");
+var elStatTotal = document.getElementById("statTotal");
+var elStatOK = document.getElementById("statOK");
+var elStatNG = document.getElementById("statNG");
+
+var elQText = document.getElementById("qText");
+var elQTag = document.getElementById("qTag");
+var elChoices = document.getElementById("choices");
+var elResult = document.getElementById("resultBox");
+
+var btnNext = document.getElementById("btnNext");
+var btnRestart = document.getElementById("btnRestart");
+var btnReset = document.getElementById("btnReset");
+var btnStart = document.getElementById("btnStart");
+
+var fShowa = document.getElementById("fShowa");
+var fHeisei = document.getElementById("fHeisei");
+var fReiwa = document.getElementById("fReiwa");
+var selCount = document.getElementById("selCount");
+
+/* =========================
+   [LOGIC-01] フィルタ
+========================= */
+function getEnabledEras(){
+  var eras = [];
+  if(state.filters.showa) eras.push("昭和");
+  if(state.filters.heisei) eras.push("平成");
+  if(state.filters.reiwa) eras.push("令和");
+  return eras;
+}
+function getGroupIndexesByEnabledEras(){
+  var enabled = getEnabledEras();
+  var idxs = [];
+  for(var i=0;i<GROUPS.length;i++){
+    if(enabled.indexOf(GROUPS[i].era) >= 0) idxs.push(i);
+  }
+  return idxs;
+}
+function buildDeck(){
+  var cand = getGroupIndexesByEnabledEras();
+  shuffle(cand);
+
+  var mode = state.countMode;
+  if(mode === "all") return cand;
+
+  var n = parseInt(mode, 10);
+  if(!isFinite(n) || n<=0) n=10;
+  if(n > cand.length) n = cand.length;
+  return cand.slice(0, n);
+}
+
+/* =========================
+   [LOGIC-02] 2択問題生成
+   - 正解メンバー: 対象グループのmembersから1名
+   - ダミーメンバー: 原則同じeraの別グループから1名
+========================= */
+function pickCorrectMember(groupObj){
+  var ms = groupObj.members || [];
+  if(ms.length === 0) return "";
+  return ms[randInt(ms.length)];
+}
+
+function buildMemberPool(groupIdxs){
+  // 有効グループ群からメンバー名の一覧を作る
+  var pool = [];
+  for(var i=0;i<groupIdxs.length;i++){
+    var g = GROUPS[groupIdxs[i]];
+    if(g && g.members && g.members.length){
+      for(var j=0;j<g.members.length;j++){
+        pool.push(g.members[j]);
+      }
+    }
+  }
+  return uniq(pool);
+}
+
+function pickDummyMember(correctGroupObj, correctMember){
+  var sameEraPool = [];
+  for(var i=0;i<GROUPS.length;i++){
+    var g = GROUPS[i];
+    if(!g || !g.members || !g.members.length) continue;
+    if(g.era !== correctGroupObj.era) continue;
+    if(g.group === correctGroupObj.group) continue;
+    for(var j=0;j<g.members.length;j++){
+      var m = g.members[j];
+      if(m !== correctMember) sameEraPool.push(m);
+    }
+  }
+  sameEraPool = uniq(sameEraPool);
+
+  if(sameEraPool.length > 0){
+    return sameEraPool[randInt(sameEraPool.length)];
+  }
+
+  // フォールバック: 全体から
+  var all = [];
+  for(var k=0;k<GROUPS.length;k++){
+    var gg = GROUPS[k];
+    if(!gg || !gg.members || !gg.members.length) continue;
+    if(gg.group === correctGroupObj.group) continue;
+    for(var t=0;t<gg.members.length;t++){
+      var mm = gg.members[t];
+      if(mm !== correctMember) all.push(mm);
+    }
+  }
+  all = uniq(all);
+  return all.length ? all[randInt(all.length)] : "";
+}
+
+function buildQuestion(){
+  var total = state.deck.length;
+  if(total === 0) return null;
+  if(state.pos >= total) return null;
+
+  var groupIdx = state.deck[state.pos];
+  var g = GROUPS[groupIdx];
+  if(!g) return null;
+
+  var correct = pickCorrectMember(g);
+  var dummy = pickDummyMember(g, correct);
+
+  var choices = shuffle([correct, dummy]);
+  return {
+    groupIdx: groupIdx,
+    era: g.era,
+    group: g.group,
+    correctMember: correct,
+    dummyMember: dummy,
+    choices: choices
+  };
+}
+
+/* =========================
+   [UI-01] 表示
+========================= */
+function updateStats(){
+  elStatQ.textContent = (state.deck.length ? (state.pos+1) : "-");
+  elStatTotal.textContent = (state.deck.length ? state.deck.length : "-");
+  elStatOK.textContent = String(state.ok);
+  elStatNG.textContent = String(state.ng);
+}
+function setResultBox(type, text){
+  elResult.style.display = "block";
+  elResult.className = "resultBox " + (type || "");
+  elResult.textContent = text;
+}
+function clearResultBox(){
+  elResult.style.display = "none";
+  elResult.className = "resultBox";
+  elResult.textContent = "";
+}
+
+function renderQuestion(){
+  state.locked = false;
+  btnNext.disabled = true;
+  clearResultBox();
+
+  if(state.deck.length === 0){
+    elQText.textContent = "データがありません（フィルタを見直してください）";
+    elQTag.textContent = "-";
+    elChoices.innerHTML = "";
+    updateStats();
+    return;
+  }
+
+  if(state.pos >= state.deck.length){
+    elQText.textContent = "終了：結果を確認してください";
+    elQTag.textContent = "完了";
+    elChoices.innerHTML = "";
+    setResultBox("", "おつかれさまでした。\n正解: " + state.ok + " / " + state.deck.length + "\n不正解: " + state.ng + "\n\n「最初から」で同じ設定のまま再スタートできます。");
+    updateStats();
+    saveState();
+    return;
+  }
+
+  state.current = buildQuestion();
+  if(!state.current){
+    elQText.textContent = "問題の生成に失敗しました（データ不足）";
+    elQTag.textContent = "-";
+    elChoices.innerHTML = "";
+    updateStats();
+    return;
+  }
+
+  elQText.textContent = "どっちが「" + state.current.group + "」のメンバー？";
+  elQTag.textContent = state.current.era;
+
+  elChoices.innerHTML = "";
+  for(var i=0;i<state.current.choices.length;i++){
+    (function(choiceText){
+      var b = document.createElement("button");
+      b.className = "btn";
+      b.textContent = choiceText;
+      b.onclick = function(){ onAnswer(choiceText); };
+      elChoices.appendChild(b);
+    })(state.current.choices[i]);
+  }
+
+  updateStats();
+  saveState();
+}
+
+function onAnswer(selected){
+  if(state.locked) return;
+  if(!state.current) return;
+
+  state.locked = true;
+
+  var ok = (selected === state.current.correctMember);
+  if(ok) state.ok++; else state.ng++;
+
+  var msg = (ok ? "正解。\n" : "不正解。\n");
+  msg += "グループ: " + state.current.group + "\n";
+  msg += "正解: " + state.current.correctMember + "\n";
+  msg += "時代: " + state.current.era + "\n";
+  msg += "（参考）メンバー: " + (GROUPS[state.current.groupIdx].members || []).join(" / ");
+
+  setResultBox(ok ? "ok" : "ng", msg);
+  btnNext.disabled = false;
+
+  updateStats();
+  saveState();
+}
+
+/* =========================
+   [CTRL-01] 設定同期
+========================= */
+function syncControlsToState(){
+  fShowa.checked = !!state.filters.showa;
+  fHeisei.checked = !!state.filters.heisei;
+  fReiwa.checked = !!state.filters.reiwa;
+  selCount.value = state.countMode;
+
+  // 全OFFは不可（安全策）
+  if(!state.filters.showa && !state.filters.heisei && !state.filters.reiwa){
+    state.filters.showa = true;
+    fShowa.checked = true;
+  }
+}
+function applyControlsToState(){
+  state.filters.showa = !!fShowa.checked;
+  state.filters.heisei = !!fHeisei.checked;
+  state.filters.reiwa = !!fReiwa.checked;
+  state.countMode = selCount.value;
+
+  // 全OFFは不可
+  if(!state.filters.showa && !state.filters.heisei && !state.filters.reiwa){
+    state.filters.showa = true;
+    fShowa.checked = true;
+  }
+}
+
+/* =========================
+   [CTRL-02] 開始/再開
+========================= */
+function startNew(){
+  applyControlsToState();
+  state.deck = buildDeck();
+  state.pos = 0;
+  state.ok = 0;
+  state.ng = 0;
+  saveState();
+  renderQuestion();
+}
+
+function resumeOrStart(){
+  // 保存があり、かつ設定が同じなら再開。違うなら新規。
+  var had = loadState();
+  if(had){
+    var uiFilters = { showa:!!fShowa.checked, heisei:!!fHeisei.checked, reiwa:!!fReiwa.checked };
+    var uiCount = selCount.value;
+
+    var same =
+      (!!state.filters.showa === !!uiFilters.showa) &&
+      (!!state.filters.heisei === !!uiFilters.heisei) &&
+      (!!state.filters.reiwa === !!uiFilters.reiwa) &&
+      (String(state.countMode) === String(uiCount));
+
+    if(same && state.deck && state.deck.length && state.pos < state.deck.length){
+      renderQuestion();
+      return;
+    }
+  }
+  startNew();
+}
+
+/* =========================
+   [EVENT-01] イベント
+========================= */
+btnStart.onclick = function(){
+  applyControlsToState();
+  saveState();
+  resumeOrStart();
+};
+
+btnNext.onclick = function(){
+  if(btnNext.disabled) return;
+  state.pos++;
+  saveState();
+  renderQuestion();
+};
+
+btnRestart.onclick = function(){
+  startNew();
+};
+
+btnReset.onclick = function(){
+  clearSaved();
+  state.deck = [];
+  state.pos = 0;
+  state.ok = 0;
+  state.ng = 0;
+  state.locked = false;
+  state.current = null;
+
+  elQText.textContent = "開始を押してください";
+  elQTag.textContent = "-";
+  elChoices.innerHTML = "";
+  btnNext.disabled = true;
+  setResultBox("", "保存データを削除しました。\n「開始（/再開）」でスタートしてください。");
+  updateStats();
+};
+
+fShowa.onchange = fHeisei.onchange = fReiwa.onchange = function(){
+  applyControlsToState();
+  saveState();
+};
+
+selCount.onchange = function(){
+  applyControlsToState();
+  saveState();
+};
+
+/* =========================
+   [BOOT-01] 初期化
+========================= */
+(function boot(){
+  var ok = loadState();
+  if(ok){
+    syncControlsToState();
+    updateStats();
+    // すぐ再開できる案内
+    if(state.deck && state.deck.length && state.pos < state.deck.length){
+      setResultBox("", "前回の続きがあります。\n「開始（/再開）」でそのまま続けられます。");
+    }
+  }else{
+    syncControlsToState();
+    updateStats();
+  }
+})();
+</script>
 </body>
 </html>

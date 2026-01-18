@@ -89,4 +89,30 @@ var GROUPS = [
   { id:"reiwa_yorushika",    era:"令和", group:"ヨルシカ",            members:["n-buna","suis"] },
   { id:"reiwa_creepy",       era:"令和", group:"Creepy Nuts",        members:["R-指定","DJ松永"] }
 
+  // ===== 令和（追加：ユーザー指定グループ / 重複は除外済み） =====
+  { id:"reiwa_naniwadanshi",       era:"令和", group:"なにわ男子",           members:[] },
+  { id:"reiwa_number_i",           era:"令和", group:"Number_i",             members:[] },
+  { id:"reiwa_andteam",            era:"令和", group:"&TEAM",                members:[] },
+  { id:"reiwa_mazzel",             era:"令和", group:"MAZZEL",               members:[] },
+  { id:"reiwa_dxteen",             era:"令和", group:"DXTEEN",               members:[] },
+  { id:"reiwa_octpath",            era:"令和", group:"OCTPATH",              members:[] },
+  { id:"reiwa_milk",               era:"令和", group:"M!LK",                 members:[] },
+  { id:"reiwa_ae_group",           era:"令和", group:"Aぇ! group",           members:[] },
+  { id:"reiwa_chotokkyo",          era:"令和", group:"超特急（令和で再ブレイク）", members:[] },
+
+  // 【女性グループ】（追加：重複は除外済み）
+  { id:"reiwa_me_i",               era:"令和", group:"ME:I",                 members:[] },
+  { id:"reiwa_fruits_zipper",      era:"令和", group:"FRUITS ZIPPER",        members:[] },
+  { id:"reiwa_equal_love",         era:"令和", group:"=LOVE",                members:[] },
+  { id:"reiwa_not_equal_me",       era:"令和", group:"≠ME",                  members:[] },
+  { id:"reiwa_nearly_equal_joy",   era:"令和", group:"≒JOY",                 members:[] },
+  { id:"reiwa_is_sue",             era:"令和", group:"IS:SUE",               members:[] },
+  { id:"reiwa_cutie_street",       era:"令和", group:"CUTIE STREET",         members:[] },
+  { id:"reiwa_candy_tune",         era:"令和", group:"CANDY TUNE",           members:[] },
+  { id:"reiwa_ilife",              era:"令和", group:"iLiFE!",               members:[] },
+  { id:"reiwa_takane_nadeshiko",   era:"令和", group:"高嶺のなでしこ",       members:[] },
+  { id:"reiwa_cho_tokimeki",       era:"令和", group:"超ときめき♡宣伝部",   members:[] },
+  { id:"reiwa_xg",                 era:"令和", group:"XG",                   members:[] },
+
+
 ];

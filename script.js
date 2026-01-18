@@ -53,12 +53,16 @@ const quizData = {
   ]
 };
 
+// 定数
+const FINAL_SCORE_DELAY = 2000; // 最終スコア表示までの遅延時間（ミリ秒）
+
 // グローバル変数
 let currentCategory = "";
 let currentQuestionIndex = 0;
 let score = 0;
 let allQuestions = [];
 let answered = false;
+let totalAnswered = 0;
 
 // DOM要素の取得
 const categoryDisplay = document.getElementById("category-display");
@@ -73,6 +77,7 @@ const restartButton = document.getElementById("restart-button");
 function initQuiz() {
   currentQuestionIndex = 0;
   score = 0;
+  totalAnswered = 0;
   allQuestions = [];
   
   // 全カテゴリの問題をシャッフルして結合
@@ -146,6 +151,7 @@ function selectOption(selectedIndex) {
   if (answered) return;
   
   answered = true;
+  totalAnswered++;
   const currentQuestion = allQuestions[currentQuestionIndex];
   const buttons = optionsContainer.querySelectorAll(".option-button");
   
@@ -174,13 +180,13 @@ function selectOption(selectedIndex) {
   if (currentQuestionIndex < allQuestions.length) {
     nextButton.style.display = "block";
   } else {
-    setTimeout(showFinalScore, 2000);
+    setTimeout(showFinalScore, FINAL_SCORE_DELAY);
   }
 }
 
 // スコア表示を更新
 function updateScoreDisplay() {
-  scoreDisplay.textContent = `スコア: ${score} / ${currentQuestionIndex + (answered ? 1 : 0)}`;
+  scoreDisplay.textContent = `スコア: ${score} / ${totalAnswered}`;
 }
 
 // 最終スコアを表示
